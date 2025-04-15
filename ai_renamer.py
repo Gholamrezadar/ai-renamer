@@ -1,6 +1,7 @@
 import os
 import argparse
 import pathlib
+import time
 from backend import generate_names 
 
 from colorama import Fore, Style, init
@@ -25,10 +26,13 @@ def rename_files(old_names, new_names):
         while new_path.exists() and new_path.name != old_path.name:
             new_path = new_path.with_name(f"{temp_path.stem}_{counter}{temp_path.suffix}")
             counter += 1
-
-        os.rename(old_path, new_path)
+        try:
+            os.rename(old_path, new_path)
+        except:
+            print(f"Error renaming {old_path} to {new_path}")
 
 if __name__ == "__main__":
+    start_time = time.time()
 
     # Get the arguments
     parser = argparse.ArgumentParser(description="Rename files in a folder using AI")
@@ -44,9 +48,9 @@ if __name__ == "__main__":
     # Generate new names using using AI
     new_names = generate_names(files)
     for file, new_name in zip(files, new_names):
-        print(f"{Fore.RED}{file.name}{Style.RESET_ALL} -> {Fore.GREEN}{new_name}{Style.RESET_ALL}")
+        print(f"{Fore.RED}{file.name}{Style.RESET_ALL} -> {Fore.GREEN}{pathlib.Path(new_name).name}{Style.RESET_ALL}")
 
     # Rename the files
     print(">> Renaming files in", args.folder, "...")
     rename_files(files, new_names)
-    print(">> Done") 
+    print(">> Done in", f"({time.time() - start_time} seconds)")

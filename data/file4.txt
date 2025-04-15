@@ -1,0 +1,1 @@
+When approaching the event loop in Node.js, remember it's single-threaded but handles asynchronous operations efficiently using callbacks and the queue.
