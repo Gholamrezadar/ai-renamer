@@ -79,8 +79,6 @@ async def generate_name_for_file(file: pathlib.Path, chain) -> str | None:
 
     try:
         name = await chain.ainvoke({"content": content})
-        # TODO:
-        # name = content[:10]
         # print(f"Model response:{file.stem} -> {name}")
         return name.strip()
     except Exception as e:
